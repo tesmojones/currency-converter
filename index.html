@@ -138,7 +138,8 @@
             style: 'currency',
             currency: to,
             minimumFractionDigits: 2
-        }
+        });
+
         resultDiv.innerText = `${amount} ${from} = ${formatter.format(convertedAmount)}`;
     }
 </script>
