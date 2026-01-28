@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Currency Converter</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box; /* Important for padding */
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .note {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>💱 Currency Converter</h1>
+    
+    <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" id="amount" placeholder="Enter amount" value="1">
+    </div>
+
+    <div class="form-group">
+        <label for="from">From</label>
+        <select id="from">
+            <option value="USD">USD - US Dollar</option>
+            <option value="IDR">IDR - Indonesian Rupiah</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="JPY">JPY - Japanese Yen</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="to">To</label>
+        <select id="to">
+            <option value="IDR" selected>IDR - Indonesian Rupiah</option>
+            <option value="USD">USD - US Dollar</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="JPY">JPY - Japanese Yen</option>
+        </select>
+    </div>
+
+    <button onclick="convert()">Convert</button>
+
+    <div id="result"></div>
+    <div class="note">Rates are approximate/static for demo.</div>
+</div>
+
+<script>
+    // Approximate rates relative to USD (base)
+    const rates = {
+        USD: 1,
+        IDR: 16250,
+        EUR: 0.92,
+        JPY: 155
+    };
+
+    function convert() {
+        const amount = parseFloat(document.getElementById('amount').value);
+        const from = document.getElementById('from').value;
+        const to = document.getElementById('to').value;
+        const resultDiv = document.getElementById('result');
+
+        if (isNaN(amount)) {
+            resultDiv.innerText = "Please enter a valid amount";
+            return;
+        }
+
+        // Convert to USD first (base), then to target
+        const amountInUSD = amount / rates[from];
+        const convertedAmount = amountInUSD * rates[to];
+
+        // Formatting
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: to,
+            minimumFractionDigits: 2
+        }
+        resultDiv.innerText = `${amount} ${from} = ${formatter.format(convertedAmount)}`;
+    }
+</script>
+
+</body>
+</html>
